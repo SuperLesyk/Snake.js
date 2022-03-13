@@ -14,17 +14,38 @@
                 <div id="score" class="score">0</div>
             </div>
        </div>
+
         <script>
          'use strict';
+
          let canva = document.getElementById('canv');
          let ctx = canva.getContext('2d');
+         const widthCell = 29;
+         const heightCell = 29;
+
+         let snake = [
+            {
+                x: 12,
+                y: 11,
+            },
+            {
+                x: 12,
+                y: 12,
+            },
+            {
+                x: 12,
+                y: 13,
+            },
+         ];
 
          buildGrid();
+         drawSnake();
          /*
          ==============================================================================
          Службові функції
          ==============================================================================
          */
+
         function buildGrid() {
             ctx.beginPath();
 
@@ -34,9 +55,29 @@
                 ctx.moveTo(0, i);
                 ctx.lineTo( canva.width, i);
             }
-           
+        
             ctx.stroke();
         }
+
+        function clearCell(coord) {
+            let x = 1 + coord.x * (widthCell + 1);
+            let y = 1 + coord.y * (heightCell + 1);
+            ctx.clearRect(x, y, widthCell, heightCell);
+        }
+
+        function makeSnakeCell(coord) {
+            let x = 1 + coord.x * (widthCell + 1);
+            let y = 1 + coord.y * (heightCell + 1);
+            ctx.fillRect(x, y, widthCell, heightCell);
+        }
+
+        function drawSnake() {
+            for (let i=0; i< snake.length;i++) {
+                makeSnakeCell(snake[i]);
+                
+            }
+        }
+
         </script>
     </body>
 </html>
