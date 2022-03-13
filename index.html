@@ -22,7 +22,8 @@
          let ctx = canva.getContext('2d');
          const widthCell = 29;
          const heightCell = 29;
-
+         const tickTimeout = 500;
+         let runDirection = 'up';
          let snake = [
             {
                 x: 12,
@@ -40,11 +41,57 @@
 
          buildGrid();
          drawSnake();
+         tick();
+
+         window.addEventListener('keydown', direction);
          /*
          ==============================================================================
          Службові функції
          ==============================================================================
          */
+        function direction(event) {
+            switch(event.code) {
+                case 'ArrowUp':
+                    runDirection = 'up';
+                    break;
+                case 'ArrowLeft':
+                    runDirection = 'left';
+                    break;
+                case 'ArrowRight':
+                    runDirection = 'right';
+                    break;
+                case 'ArrowDown':
+                    runDirection = 'down';
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        function tick() {
+            let headCoord = {
+                x: snake[0].x,
+                y: snake[0].y,
+            };
+                switch(runDirection) {
+                    case 'up':
+                        headCoord.y -= 1;
+                        break;
+                    case 'down':
+                        headCoord.y += 1;
+                        break;
+                    case 'left':
+                        headCoord.x -= 1;
+                        break;
+                    default:
+                        headCoord.x += 1;
+                        break;
+                }
+            clearCell(snake.pop());
+            makeSnakeCell(headCoord); 
+            snake.unshift(headCoord);   
+            setTimeout(tick, tickTimeout);
+        }
 
         function buildGrid() {
             ctx.beginPath();
